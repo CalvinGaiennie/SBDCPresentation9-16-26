@@ -78,7 +78,7 @@
     font-weight: 500;
     font-size: clamp(1.15rem, 2vw, 1.6rem);
     color: var(--ink-dim);
-    max-width: 28ch;
+    max-width: 24ch;
   }
   .slide-title .sub{
     margin-top: 2.8vh;
@@ -260,31 +260,18 @@
   }
   #timer.behind .elapsed{ color: var(--warn); border-color: var(--warn); }
   #timer.behind .next{ color: var(--warn); }
-  .navzone{
-    position:fixed; top:0; bottom:0; width:7vw; min-width:52px; z-index:40; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    color: var(--ink-faint);
-    transition: color 0.2s, background 0.2s;
-  }
-  .navzone svg{ width:28px; height:28px; pointer-events:none; }
-  .navzone:hover{ color: var(--accent); background: rgba(180,101,15,0.06); }
+  .navzone{ position:fixed; top:0; bottom:0; width:6vw; z-index:40; cursor:pointer; }
   #nav-prev{ left:0; }
   #nav-next{ right:0; }
-  #arrows{ position:fixed; right:8vw; bottom:2.6vh; z-index:50; display:flex; gap:0.6em; }
+  #arrows{ position:fixed; right:8vw; bottom:2.2vh; z-index:50; display:flex; gap:0.6em; }
   .arrow-btn{
-    width:42px; height:42px; border-radius:50%;
+    width:34px; height:34px; border-radius:50%;
     border:1px solid var(--line); background: #fff;
-    color: var(--ink); display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 10px rgba(32,30,25,0.08);
-    padding:0;
+    color: var(--ink-dim); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1rem; transition: border-color 0.2s, color 0.2s;
   }
-  .arrow-btn svg{ width:18px; height:18px; display:block; }
   .arrow-btn:hover{ border-color: var(--accent); color: var(--accent); }
   .arrow-btn:focus-visible, a:focus-visible, button:focus-visible{ outline: 2px solid var(--accent); outline-offset:2px; }
-  @media (max-width: 800px){
-    .navzone svg{ display:none; }
-  }
 
   /* timer modal */
   .modal-overlay{
@@ -345,7 +332,7 @@
     <div class="kicker">Workshop</div>
     <h1>AI for Business Owners</h1>
     <p class="tagline">From novelty to a practical efficiency tool</p>
-    <p class="sub">60 minutes · September 16, 2026</p>
+    <p class="sub">60 minutes</p>
   </section>
 
   <section class="slide slide-point" data-section="Our Goal" data-cutoff="1">
@@ -361,24 +348,24 @@
     <h1>Outline</h1>
     <div class="time">1 min</div>
     <div class="outline-list">
-      <div class="row"><span>Why this matters now</span><span class="s">5 min</span></div>
-      <div class="sub-group">
+      <div class="row"><span>Why this matters now</span><span class="s">Slide 4-5</span></div>
+      <div class="sub-group" id="sub-why">
         <div class="row sub"><span>The shift from novelty to tool</span><span class="s">Slide 4</span></div>
         <div class="row sub"><span>What changed for small businesses</span><span class="s">Slide 5</span></div>
       </div>
-      <div class="row"><span>Overview of the LLM landscape</span><span class="s">10 min</span></div>
-      <div class="sub-group">
+      <div class="row"><span>Overview of the LLM landscape</span><span class="s">Slide 6-8</span></div>
+      <div class="sub-group" id="sub-landscape">
         <div class="row sub"><span>The landscape</span><span class="s">Slide 6</span></div>
         <div class="row sub"><span>Major free and low-cost platforms</span><span class="s">Slide 7</span></div>
         <div class="row sub"><span>How to choose</span><span class="s">Slide 8</span></div>
       </div>
-      <div class="row"><span>Live demo: putting AI to work</span><span class="s">22 min</span></div>
-      <div class="sub-group">
+      <div class="row"><span>Live demo: putting AI to work</span><span class="s">Slide 9-10</span></div>
+      <div class="sub-group" id="sub-demo">
         <div class="row sub"><span>Drafting and building</span><span class="s">Slide 9</span></div>
         <div class="row sub"><span>Automating a repetitive task</span><span class="s">Slide 10</span></div>
       </div>
-      <div class="row"><span>Getting started without getting overwhelmed</span><span class="s">7 min · Slide 11</span></div>
-      <div class="row"><span>Q&amp;A</span><span class="s">14 min · Slide 12</span></div>
+      <div class="row"><span>Getting started without getting overwhelmed</span><span class="s">Slide 11</span></div>
+      <div class="row"><span>Q&amp;A</span><span class="s">Slide 12</span></div>
     </div>
   </section>
 
@@ -450,10 +437,6 @@
         <h2>Grok</h2>
         <p class="notes">Fewest guardrails of any major model. Useful when other tools refuse a reasonable business question</p>
       </div>
-      <div class="case">
-        <h2>Free vs paid</h2>
-        <p class="notes">Every one of these has a usable free tier. Paid plans mainly buy speed, higher limits, and better models</p>
-      </div>
     </div>
   </section>
 
@@ -471,18 +454,19 @@
   <section class="slide slide-point" data-section="Live Demo" data-cutoff="34">
     <h1>Live demo: putting AI to work</h1>
     <div class="time">17 min</div>
-    <h2>Drafting content</h2>
-    <p class="notes">A real email, social post, or proposal. Give it context about your business, then edit the draft instead of starting from a blank page</p>
-    <h2>Building something small</h2>
-    <p class="notes">A landing page, simple dashboard, or custom form. Host on Netlify; build in Claude Code or Cursor</p>
+    <h2>Options</h2>
+    <p class="notes">Drafting content</p>
+    <p class="notes">Building a landing page or dashboard</p>
+    <p class="notes">Automating a repetitive task</p>
+    <p class="notes">Custom form</p>
     <h2>Notes</h2>
-    <p class="notes">Ask the room which of these would help most. Leave time for the automation example next</p>
+    <p class="notes">Host on Netlify, build in Claude Code or Cursor</p>
+    <p class="notes">Ask the room which of these would help most. Remember Q&amp;A time</p>
   </section>
 
   <section class="slide slide-point" data-section="Automation" data-cutoff="39">
     <h1>Automating a repetitive task</h1>
     <div class="time">5 min</div>
-    <p class="notes">A Make.com-style workflow: when X happens, do Y. Click the image for a more complex version</p>
     <div class="automation-demo" id="automation-demo" data-state="simple">
       <img id="automation-img" src="images/automation-simple.png" alt="A simple Make.com scenario">
       <p class="img-caption" id="automation-caption">A simple scenario. Click for a complex one</p>
@@ -493,11 +477,15 @@
     <h1>Getting started without getting overwhelmed</h1>
     <div class="time">7 min</div>
     <h2>Pick one tool tonight</h2>
-    <p class="notes">ChatGPT or Claude. Create the free account before you leave, or on the drive home. Do not comparison-shop all five</p>
+    <p class="notes">ChatGPT or Claude. Create the free account before you leave, or on the drive home</p>
+    <p class="notes">Do not comparison-shop all five</p>
     <h2>Bring one real task</h2>
-    <p class="notes">An email you have been putting off, a page of notes that need to become a post, a process you repeat every week. Paste it in and ask for a first draft</p>
+    <p class="notes">An email you have been putting off, a page of notes that need to become a post, a process you repeat every week</p>
+    <p class="notes">Paste it in and ask for a first draft</p>
     <h2>Then stop</h2>
-    <p class="notes">Use it on that one task this week. If it saves you time, do another. That is the whole plan</p>
+    <p class="notes">Use it on that one task this week</p>
+    <p class="notes">If it saves you time, do another</p>
+    <p class="notes">That is the whole plan</p>
   </section>
 
   <section class="slide slide-point" data-section="Q&A" data-cutoff="60">
@@ -522,19 +510,11 @@
   <span class="next" id="timer-next">Next slide by 2:00</span>
 </div>
 <div id="arrows">
-  <button class="arrow-btn" id="btn-prev" aria-label="Previous slide">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-  <button class="arrow-btn" id="btn-next" aria-label="Next slide">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
+  <button class="arrow-btn" id="btn-prev" aria-label="Previous slide">‹</button>
+  <button class="arrow-btn" id="btn-next" aria-label="Next slide">›</button>
 </div>
-<div class="navzone" id="nav-prev" aria-hidden="true">
-  <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</div>
-<div class="navzone" id="nav-next" aria-hidden="true">
-  <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</div>
+<div class="navzone" id="nav-prev" aria-hidden="true"></div>
+<div class="navzone" id="nav-next" aria-hidden="true"></div>
 
 <div class="modal-overlay" id="timer-modal" hidden>
   <div class="modal-box" role="dialog" aria-modal="true" aria-label="Adjust timer">
