@@ -272,6 +272,10 @@
   }
   .arrow-btn:hover{ border-color: var(--accent); color: var(--accent); }
   .arrow-btn:focus-visible, a:focus-visible, button:focus-visible{ outline: 2px solid var(--accent); outline-offset:2px; }
+  iframe[title="Powered by Netlify"],
+  iframe[data-nl-ready]{
+    display: none !important;
+  }
 
   /* timer modal */
   .modal-overlay{
