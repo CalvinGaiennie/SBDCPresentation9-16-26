@@ -1,0 +1,793 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>AI for Business Owners</title>
+
+<style>
+  :root{
+    --bg: #faf8f3;
+    --ink: #201e19;
+    --ink-dim: #5c584f;
+    --ink-faint: #94897a;
+    --accent: #b4650f;
+    --warn: #b0362a;
+    --line: rgba(32,30,25,0.12);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  h1{
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    text-wrap: balance;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  #deck{ position: relative; width: 100vw; height: 100vh; }
+
+  .slide{
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6vh 8vw;
+    opacity: 0;
+  }
+  .slide.active{
+    display: flex;
+    opacity: 1;
+    animation: rise 0.45s ease;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform: translateY(12px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* title slide */
+  .slide-title .kicker{
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    margin-bottom: 2.6vh;
+  }
+  .slide-title h1{
+    font-size: clamp(2.4rem, 5.6vw, 4.8rem);
+    line-height: 1.05;
+    max-width: 18ch;
+  }
+  .slide-title .tagline{
+    margin-top: 1.6vh;
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    color: var(--ink-dim);
+    max-width: 28ch;
+  }
+  .slide-title .sub{
+    margin-top: 2.8vh;
+    font-size: clamp(1rem, 1.4vw, 1.3rem);
+    color: var(--ink-dim);
+  }
+
+  /* outline point slides */
+  .slide-point{
+    justify-content: flex-start;
+    padding-top: 22vh;
+  }
+  .slide-point h1{
+    font-size: clamp(2.4rem, 5vw, 4.4rem);
+    line-height: 1.1;
+    max-width: 20ch;
+  }
+  .slide-point .time{
+    position: absolute;
+    top: 6vh;
+    left: 8vw;
+    display:inline-flex; align-items:center;
+    font-weight: 500;
+    color: var(--accent);
+    font-size: 1.05rem;
+    border: 1px solid var(--line);
+    padding: 0.5em 1.1em;
+    border-radius: 999px;
+    width: fit-content;
+  }
+  .slide-point .notes{
+    margin-top: 3.4vh;
+    max-width: 62ch;
+    font-size: clamp(1rem, 1.3vw, 1.2rem);
+    line-height: 1.6;
+    color: var(--ink-dim);
+  }
+  .automation-demo{
+    margin-top: 2.6vh;
+    cursor: pointer;
+  }
+  .automation-demo img{
+    display: block;
+    max-width: 62vw;
+    max-height: 40vh;
+    width: auto; height: auto;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(32,30,25,0.08);
+  }
+  .automation-demo .img-caption{
+    margin-top: 1vh;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+  .slide-point h2{
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.1rem, 1.9vw, 1.5rem);
+    margin: 3vh 0 0;
+    color: var(--ink);
+  }
+  .slide-point h2 + .notes{ margin-top: 1.2vh; }
+  .slide-point .notes + .notes{ margin-top: 0.6vh; }
+
+  .case-grid{
+    margin-top: 2.6vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5vw;
+  }
+  .case-grid h2{
+    margin: 2.4vh 0 0;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+  }
+  .case:first-child h2, .case:nth-child(2) h2{ margin-top: 0; }
+  .case-grid .notes{
+    margin-top: 0.5vh !important;
+    font-size: clamp(0.85rem, 1.05vw, 1rem);
+    line-height: 1.4;
+  }
+  .case-grid h2 + .notes{ margin-top: 1vh !important; }
+
+  .contact-list{
+    margin-top: 2.6vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6vh;
+  }
+  .contact-row{
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+  }
+  .contact-label{
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    color: var(--accent);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    min-width: 6ch;
+  }
+  .contact-value{
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: var(--ink);
+  }
+
+  /* outline list */
+  .outline-list{
+    margin-top: 3.4vh;
+    display:flex; flex-direction:column;
+    max-width: 56ch;
+  }
+  .outline-list .row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    gap: 1.5em;
+    padding: 1.1vh 0;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  }
+  .outline-list .row:first-child{ padding-top: 0; }
+  .outline-list .row .t{ color: var(--ink-faint); font-weight: 500; white-space: nowrap; }
+  .outline-list .row.sub{
+    padding: 0.5vh 0 0.5vh 2em;
+    border-bottom: none;
+    font-size: 0.8em;
+    color: var(--ink-faint);
+  }
+  .outline-list .row.sub .s{ font-weight: 500; }
+  .sub-group{ margin-bottom: 0.5vh; }
+  .outline-list .row .s{ color: var(--ink-faint); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .outline-list .row-subheaders{
+    display: flex;
+    flex-direction: column;
+    padding: 0.2vh 0 0.9vh 0;
+  }
+  .outline-list .subheader-line{
+    font-size: 0.75em;
+    color: var(--ink-faint);
+    padding: 0.15vh 0 0.15vh 2em;
+  }
+
+  /* chrome */
+  #progress-track{
+    position:fixed; left:0; right:0; bottom:0; height:3px;
+    background: var(--line); z-index: 50;
+  }
+  #progress-bar{
+    height:100%; background: var(--accent); width:0%;
+    transition: width 0.4s ease;
+  }
+  #hud{
+    position:fixed; left:8vw; bottom: 2.6vh; z-index:50;
+    font-weight:500; font-size:0.85rem; color: var(--ink-faint);
+    cursor:pointer;
+  }
+  #timer{
+    position:fixed; top:6vh; right:8vw; z-index:50;
+    display:flex; flex-direction:column; align-items:flex-end; gap:0.3em;
+    cursor:pointer;
+  }
+  #timer .elapsed{
+    display:inline-flex; align-items:center;
+    font-weight:600;
+    color: var(--accent);
+    font-size:0.8rem;
+    border:1px solid var(--line);
+    padding:0.32em 0.75em;
+    border-radius:999px;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  #timer .next{
+    font-size:0.66rem;
+    font-weight:500;
+    color: var(--ink-faint);
+    padding-right:0.3em;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s ease;
+  }
+  #timer.behind .elapsed{ color: var(--warn); border-color: var(--warn); }
+  #timer.behind .next{ color: var(--warn); }
+  .navzone{ position:fixed; top:0; bottom:0; width:6vw; z-index:40; cursor:pointer; }
+  #nav-prev{ left:0; }
+  #nav-next{ right:0; }
+  #arrows{ position:fixed; right:8vw; bottom:2.2vh; z-index:50; display:flex; gap:0.6em; }
+  .arrow-btn{
+    width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--line); background: #fff;
+    color: var(--ink-dim); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1rem; transition: border-color 0.2s, color 0.2s;
+  }
+  .arrow-btn:hover{ border-color: var(--accent); color: var(--accent); }
+  .arrow-btn:focus-visible, a:focus-visible, button:focus-visible{ outline: 2px solid var(--accent); outline-offset:2px; }
+
+  /* timer modal */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:100;
+    background: rgba(32,30,25,0.45);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .modal-overlay[hidden]{ display:none; }
+  .modal-box{
+    background: var(--bg);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:2em 2.2em;
+    width:min(90vw, 380px);
+    box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  }
+  .modal-box h2{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:600;
+    font-size:1.3rem;
+    margin:0 0 1.2em;
+  }
+  .modal-row{ margin-bottom:1.2em; }
+  .modal-row label{
+    display:block; font-size:0.8rem; color:var(--ink-dim); margin-bottom:0.4em;
+  }
+  .modal-row .inline{ display:flex; gap:0.5em; }
+  .modal-row input[type=text], .modal-row select{
+    flex:1; min-width:0; padding:0.5em 0.7em;
+    border:1px solid var(--line); border-radius:8px;
+    font-size:0.95rem; font-family:inherit; background:#fff; color:var(--ink);
+  }
+  .modal-btn{
+    padding:0.5em 1em; border-radius:8px; border:1px solid var(--line);
+    background:#fff; color:var(--ink-dim); cursor:pointer;
+    font-size:0.9rem; font-family:inherit;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .modal-btn:hover{ border-color: var(--accent); color: var(--accent); }
+  .modal-btn.primary{ width:100%; background: var(--accent); border-color: var(--accent); color:#fff; }
+  .modal-btn.primary:hover{ opacity:0.9; color:#fff; }
+  .modal-btn.close{ width:100%; margin-top:0.4em; }
+  .outline-modal-box{ width:min(90vw, 460px); }
+  .outline-modal-box #outline-modal-list{
+    margin-top:0; margin-bottom:1.2em;
+    max-height:56vh; overflow-y:auto;
+  }
+  .outline-modal-box .row{ cursor:pointer; transition: color 0.15s; }
+  .outline-modal-box .row:hover{ color: var(--accent); }
+  .outline-modal-box .row:hover .t{ color: var(--accent); }
+  .outline-modal-box .row.current{ color: var(--accent); font-weight:600; }
+  .outline-modal-box .row.current .t{ color: var(--accent); }
+</style>
+
+<div id="deck">
+
+  <section class="slide slide-title active" data-section="Welcome" data-cutoff="0">
+    <div class="kicker">Workshop</div>
+    <h1>AI for Business Owners</h1>
+    <p class="tagline">From novelty to a practical efficiency tool</p>
+    <p class="sub">60 minutes · September 16, 2026</p>
+  </section>
+
+  <section class="slide slide-point" data-section="Our Goal" data-cutoff="1">
+    <h1>My goal</h1>
+    <div class="time">1 min</div>
+    <h2>What I want you to walk away with</h2>
+    <p class="notes">A clear sense of which free and low-cost AI tools fit small businesses, and how to put one to work on a real task this week</p>
+    <h2>How to get the most out of this</h2>
+    <p class="notes">Every slide has buffer time built in, so ask questions as we go. The 10–15 minutes of Q&amp;A at the end is just for whatever's left</p>
+  </section>
+
+  <section class="slide slide-point" data-section="Outline" data-cutoff="2">
+    <h1>Outline</h1>
+    <div class="time">1 min</div>
+    <div class="outline-list">
+      <div class="row"><span>Why this matters now</span><span class="s">5 min</span></div>
+      <div class="sub-group">
+        <div class="row sub"><span>The shift from novelty to tool</span><span class="s">Slide 4</span></div>
+        <div class="row sub"><span>What changed for small businesses</span><span class="s">Slide 5</span></div>
+      </div>
+      <div class="row"><span>Overview of the LLM landscape</span><span class="s">10 min</span></div>
+      <div class="sub-group">
+        <div class="row sub"><span>The landscape</span><span class="s">Slide 6</span></div>
+        <div class="row sub"><span>Major free and low-cost platforms</span><span class="s">Slide 7</span></div>
+        <div class="row sub"><span>How to choose</span><span class="s">Slide 8</span></div>
+      </div>
+      <div class="row"><span>Live demo: putting AI to work</span><span class="s">22 min</span></div>
+      <div class="sub-group">
+        <div class="row sub"><span>Drafting and building</span><span class="s">Slide 9</span></div>
+        <div class="row sub"><span>Automating a repetitive task</span><span class="s">Slide 10</span></div>
+      </div>
+      <div class="row"><span>Getting started without getting overwhelmed</span><span class="s">7 min · Slide 11</span></div>
+      <div class="row"><span>Q&amp;A</span><span class="s">14 min · Slide 12</span></div>
+    </div>
+  </section>
+
+  <section class="slide slide-point" data-section="Why this matters" data-cutoff="4">
+    <h1>The shift from novelty to tool</h1>
+    <div class="time">2 min</div>
+    <h2>The novelty phase is over</h2>
+    <p class="notes">Asking ChatGPT a fun question is no longer the point. The useful question is: what repetitive work can this take off my plate this week?</p>
+    <h2>Practical, not magical</h2>
+    <p class="notes">These tools draft, summarize, research, and build. They still need your judgment. Treat them like a fast junior assistant, not an oracle</p>
+    <h2>Efficiency is the real story</h2>
+    <p class="notes">The businesses getting value are using AI on emails, proposals, research, simple apps, and automations — not waiting for a perfect strategy</p>
+  </section>
+
+  <section class="slide slide-point" data-section="Small businesses" data-cutoff="7">
+    <h1>What changed for small businesses</h1>
+    <div class="time">3 min</div>
+    <h2>No IT department required</h2>
+    <p class="notes">You can get expert-level feedback on ideas, copy, and decisions any time, for a fraction of the cost of a consultant</p>
+    <h2>Custom tools are now accessible</h2>
+    <p class="notes">The training required to build a useful internal tool has dropped from a few years to a few hours</p>
+    <h2>Time is the constraint, not talent</h2>
+    <p class="notes">Every hour you spend on drafts, data entry, and one-off research is an hour you are not selling, serving, or deciding. That is where AI pays off first</p>
+  </section>
+
+  <section class="slide slide-point" data-section="LLM landscape" data-cutoff="8">
+    <h1>The LLM landscape</h1>
+    <div class="time">1 min</div>
+    <h2>Outline</h2>
+    <div class="outline-list">
+      <div class="row"><span>Major free and low-cost platforms</span><span class="t">Slide 7</span></div>
+      <div class="row-subheaders">
+        <div class="subheader-line">ChatGPT</div>
+        <div class="subheader-line">Claude</div>
+        <div class="subheader-line">Gemini</div>
+        <div class="subheader-line">Perplexity</div>
+        <div class="subheader-line">Grok</div>
+      </div>
+      <div class="row"><span>How to choose</span><span class="t">Slide 8</span></div>
+      <div class="row-subheaders">
+        <div class="subheader-line">Match the tool to the job</div>
+        <div class="subheader-line">Start free</div>
+        <div class="subheader-line">One tool is enough</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide slide-point" data-section="Popular LLMs" data-cutoff="14">
+    <h1>Major free and low-cost platforms</h1>
+    <div class="time">6 min</div>
+    <div class="case-grid">
+      <div class="case">
+        <h2>ChatGPT</h2>
+        <p class="notes">Best at remembering past conversations. Strong all-purpose starting point for writing and brainstorming</p>
+      </div>
+      <div class="case">
+        <h2>Claude</h2>
+        <p class="notes">Combines a chatbot, coding assistant, and a strong skills feature. Especially good for long documents and building things</p>
+      </div>
+      <div class="case">
+        <h2>Gemini</h2>
+        <p class="notes">Built into Chrome and Google Workspace. Best when the work already lives in Gmail, Docs, or Sheets</p>
+      </div>
+      <div class="case">
+        <h2>Perplexity</h2>
+        <p class="notes">Best at citing its sources. Use it when you need research you can check, not just a fluent answer</p>
+      </div>
+      <div class="case">
+        <h2>Grok</h2>
+        <p class="notes">Fewest guardrails of any major model. Useful when other tools refuse a reasonable business question</p>
+      </div>
+      <div class="case">
+        <h2>Free vs paid</h2>
+        <p class="notes">Every one of these has a usable free tier. Paid plans mainly buy speed, higher limits, and better models</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide slide-point" data-section="How to choose" data-cutoff="17">
+    <h1>How to choose</h1>
+    <div class="time">3 min</div>
+    <h2>Match the tool to the job</h2>
+    <p class="notes">Writing and chat: ChatGPT. Long docs and building: Claude. Google work: Gemini. Research with sources: Perplexity</p>
+    <h2>Start free</h2>
+    <p class="notes">Do not buy a stack of subscriptions. Pick one free account, use it for a week, and upgrade only if you hit a wall</p>
+    <h2>One tool is enough</h2>
+    <p class="notes">Personal preference matters more than picking the "best" model. Switching later is easy. Starting is the hard part</p>
+  </section>
+
+  <section class="slide slide-point" data-section="Live Demo" data-cutoff="34">
+    <h1>Live demo: putting AI to work</h1>
+    <div class="time">17 min</div>
+    <h2>Drafting content</h2>
+    <p class="notes">A real email, social post, or proposal. Give it context about your business, then edit the draft instead of starting from a blank page</p>
+    <h2>Building something small</h2>
+    <p class="notes">A landing page, simple dashboard, or custom form. Host on Netlify; build in Claude Code or Cursor</p>
+    <h2>Notes</h2>
+    <p class="notes">Ask the room which of these would help most. Leave time for the automation example next</p>
+  </section>
+
+  <section class="slide slide-point" data-section="Automation" data-cutoff="39">
+    <h1>Automating a repetitive task</h1>
+    <div class="time">5 min</div>
+    <p class="notes">A Make.com-style workflow: when X happens, do Y. Click the image for a more complex version</p>
+    <div class="automation-demo" id="automation-demo" data-state="simple">
+      <img id="automation-img" src="images/automation-simple.png" alt="A simple Make.com scenario">
+      <p class="img-caption" id="automation-caption">A simple scenario. Click for a complex one</p>
+    </div>
+  </section>
+
+  <section class="slide slide-point" data-section="Getting Started" data-cutoff="46">
+    <h1>Getting started without getting overwhelmed</h1>
+    <div class="time">7 min</div>
+    <h2>Pick one tool tonight</h2>
+    <p class="notes">ChatGPT or Claude. Create the free account before you leave, or on the drive home. Do not comparison-shop all five</p>
+    <h2>Bring one real task</h2>
+    <p class="notes">An email you have been putting off, a page of notes that need to become a post, a process you repeat every week. Paste it in and ask for a first draft</p>
+    <h2>Then stop</h2>
+    <p class="notes">Use it on that one task this week. If it saves you time, do another. That is the whole plan</p>
+  </section>
+
+  <section class="slide slide-point" data-section="Q&A" data-cutoff="60">
+    <h1>Q&amp;A</h1>
+    <div class="time">14 min</div>
+    <h2>Get in touch</h2>
+    <div class="contact-list">
+      <div class="contact-row"><span class="contact-label">LinkedIn</span><span class="contact-value">linkedin.com/in/calvin-gaiennie</span></div>
+      <div class="contact-row"><span class="contact-label">Website</span><span class="contact-value">cgdevworksllc.com</span></div>
+      <div class="contact-row"><span class="contact-label">Email</span><span class="contact-value">calvin@cgdevworksllc.com</span></div>
+    </div>
+    <h2>Know someone who'd like this?</h2>
+    <p class="notes">Feel free to share these slides or send them my way</p>
+  </section>
+
+</div>
+
+<div id="progress-track"><div id="progress-bar"></div></div>
+<div id="hud">Slide 1 of 9</div>
+<div id="timer">
+  <span class="elapsed" id="timer-elapsed">0:00 / 60:00</span>
+  <span class="next" id="timer-next">Next slide by 2:00</span>
+</div>
+<div id="arrows">
+  <button class="arrow-btn" id="btn-prev" aria-label="Previous slide">‹</button>
+  <button class="arrow-btn" id="btn-next" aria-label="Next slide">›</button>
+</div>
+<div class="navzone" id="nav-prev" aria-hidden="true"></div>
+<div class="navzone" id="nav-next" aria-hidden="true"></div>
+
+<div class="modal-overlay" id="timer-modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-label="Adjust timer">
+    <h2>Adjust timer</h2>
+    <div class="modal-row">
+      <button class="modal-btn primary" id="modal-restart">Restart timer to 0:00</button>
+    </div>
+    <div class="modal-row">
+      <label for="modal-slide-input">Jump to slide (sets clock to that slide's scheduled start)</label>
+      <div class="inline">
+        <select id="modal-slide-input"></select>
+        <button class="modal-btn" id="modal-slide-go">Go</button>
+      </div>
+    </div>
+    <div class="modal-row">
+      <label for="modal-time-input">Set elapsed time (mm:ss or minutes)</label>
+      <div class="inline">
+        <input type="text" id="modal-time-input" placeholder="e.g. 12:30">
+        <button class="modal-btn" id="modal-time-go">Set</button>
+      </div>
+    </div>
+    <button class="modal-btn close" id="modal-close">Close</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="outline-modal" hidden>
+  <div class="modal-box outline-modal-box" role="dialog" aria-modal="true" aria-label="Presentation outline">
+    <h2>Outline</h2>
+    <div class="outline-list" id="outline-modal-list"></div>
+    <button class="modal-btn close" id="outline-modal-close">Close</button>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var total = slides.length;
+    var i = 0;
+    var prevI = null;
+    var automationIndex = slides.findIndex(function(s){ return s.dataset.section === 'Automation'; });
+    var automationDemo = document.getElementById('automation-demo');
+    var automationImg = document.getElementById('automation-img');
+    var automationCaption = document.getElementById('automation-caption');
+
+    function setAutomationState(state){
+      if (!automationDemo) return;
+      automationDemo.dataset.state = state;
+      if (state === 'complex'){
+        automationImg.src = 'images/automation-complex.png';
+        automationImg.alt = 'A complex Make.com scenario';
+        automationCaption.textContent = 'A more complex scenario';
+      } else {
+        automationImg.src = 'images/automation-simple.png';
+        automationImg.alt = 'A simple Make.com scenario';
+        automationCaption.textContent = 'A simple scenario. Click for a complex one';
+      }
+    }
+    function revealComplexAutomation(){
+      if (automationDemo && automationDemo.dataset.state !== 'complex'){
+        setAutomationState('complex');
+        return true;
+      }
+      return false;
+    }
+    if (automationDemo){
+      automationDemo.addEventListener('click', function(){
+        setAutomationState(automationDemo.dataset.state === 'complex' ? 'simple' : 'complex');
+      });
+    }
+
+    var bar = document.getElementById('progress-bar');
+    var hud = document.getElementById('hud');
+    var TOTAL_MINUTES = parseFloat(slides[slides.length - 1].dataset.cutoff);
+    var startTime = null;
+    var timerEl = document.getElementById('timer');
+    var timerElapsed = document.getElementById('timer-elapsed');
+    var timerNext = document.getElementById('timer-next');
+
+    var modal = document.getElementById('timer-modal');
+    var modalRestart = document.getElementById('modal-restart');
+    var modalSlideInput = document.getElementById('modal-slide-input');
+    var modalSlideGo = document.getElementById('modal-slide-go');
+    var modalTimeInput = document.getElementById('modal-time-input');
+    var modalTimeGo = document.getElementById('modal-time-go');
+    var modalClose = document.getElementById('modal-close');
+
+    var outlineModal = document.getElementById('outline-modal');
+    var outlineModalList = document.getElementById('outline-modal-list');
+    var outlineModalClose = document.getElementById('outline-modal-close');
+
+    function openOutlineModal(){
+      outlineModalList.innerHTML = '';
+      slides.forEach(function(s, idx){
+        var h1 = s.querySelector('h1');
+        var title = h1 ? h1.textContent : s.dataset.section;
+        var ownMin = parseFloat(s.dataset.cutoff) - startOfSlide(idx);
+
+        var row = document.createElement('div');
+        row.className = 'row' + (idx === i ? ' current' : '');
+
+        var titleSpan = document.createElement('span');
+        titleSpan.textContent = (idx + 1) + '. ' + title;
+
+        var timeSpan = document.createElement('span');
+        timeSpan.className = 't';
+        timeSpan.textContent = ownMin > 0 ? ownMin + ' min' : '—';
+
+        row.appendChild(titleSpan);
+        row.appendChild(timeSpan);
+        row.addEventListener('click', function(){
+          i = idx;
+          render();
+          closeOutlineModal();
+        });
+        outlineModalList.appendChild(row);
+      });
+      outlineModal.hidden = false;
+    }
+    function closeOutlineModal(){ outlineModal.hidden = true; }
+
+    slides.forEach(function(s, idx){
+      var h1 = s.querySelector('h1');
+      var mark = fmt(startOfSlide(idx) * 60);
+      var label = (idx + 1) + ' — ' + (h1 ? h1.textContent : s.dataset.section) + ' (' + mark + ')';
+      var opt = document.createElement('option');
+      opt.value = idx + 1;
+      opt.textContent = label;
+      modalSlideInput.appendChild(opt);
+    });
+
+    function openModal(){
+      modal.hidden = false;
+      modalSlideInput.value = i + 1;
+      modalTimeInput.value = '';
+      modalSlideInput.focus();
+    }
+    function closeModal(){ modal.hidden = true; }
+
+    function startOfSlide(idx){
+      return idx === 0 ? 0 : parseFloat(slides[idx - 1].dataset.cutoff);
+    }
+
+    function parseTimeInput(str){
+      str = (str || '').trim();
+      if (!str) return null;
+      if (str.indexOf(':') !== -1){
+        var parts = str.split(':');
+        if (parts.length !== 2) return null;
+        var m = parseInt(parts[0], 10), s = parseInt(parts[1], 10);
+        if (isNaN(m) || isNaN(s)) return null;
+        return m * 60 + s;
+      }
+      var mins = parseFloat(str);
+      if (isNaN(mins)) return null;
+      return Math.round(mins * 60);
+    }
+
+    var STORAGE_KEY = 'sbdc-9-16-26-deck-state';
+    var STALE_MS = 4 * 60 * 60 * 1000;
+
+    function saveState(){
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ i: i, startTime: startTime, savedAt: Date.now() }));
+      } catch(e){}
+    }
+
+    function loadState(){
+      try{
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        var state = JSON.parse(raw);
+        if (!state || typeof state.i !== 'number' || !state.savedAt) return;
+        if (Date.now() - state.savedAt > STALE_MS) return;
+        if (state.i >= 0 && state.i < total){ i = state.i; }
+        if (typeof state.startTime === 'number'){ startTime = state.startTime; }
+      } catch(e){}
+    }
+
+    function fmt(totalSeconds){
+      var m = Math.floor(totalSeconds / 60);
+      var s = totalSeconds % 60;
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    function render(){
+      if (i === automationIndex && prevI !== i){ setAutomationState('simple'); }
+      prevI = i;
+      slides.forEach(function(s, idx){ s.classList.toggle('active', idx === i); });
+      bar.style.width = ((i+1) / total * 100) + '%';
+      hud.textContent = 'Slide ' + (i+1) + ' of ' + total;
+      tickTimer();
+      saveState();
+    }
+
+    function tickTimer(){
+      var elapsedSec = startTime === null ? 0 : Math.floor((Date.now() - startTime) / 1000);
+      timerElapsed.textContent = fmt(elapsedSec) + ' / ' + TOTAL_MINUTES + ':00';
+
+      var cutoffMin = parseFloat(slides[i].dataset.cutoff);
+      var cutoffSec = cutoffMin * 60;
+      if (i === total - 1){
+        timerNext.textContent = 'Wrap up by ' + fmt(cutoffSec);
+      } else {
+        timerNext.textContent = 'Next slide by ' + fmt(cutoffSec);
+      }
+      timerEl.classList.toggle('behind', elapsedSec > cutoffSec);
+    }
+
+    setInterval(tickTimer, 1000);
+    function go(delta){
+      if (delta > 0 && i === automationIndex && revealComplexAutomation()){ return; }
+      var wasFirst = (i === 0);
+      i = Math.max(0, Math.min(total - 1, i + delta));
+      if (wasFirst && i > 0 && startTime === null){ startTime = Date.now(); }
+      render();
+    }
+
+    document.getElementById('nav-prev').addEventListener('click', function(){ go(-1); });
+    document.getElementById('nav-next').addEventListener('click', function(){ go(1); });
+    document.getElementById('btn-prev').addEventListener('click', function(){ go(-1); });
+    document.getElementById('btn-next').addEventListener('click', function(){ go(1); });
+
+    timerEl.addEventListener('click', openModal);
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
+
+    hud.addEventListener('click', openOutlineModal);
+    outlineModalClose.addEventListener('click', closeOutlineModal);
+    outlineModal.addEventListener('click', function(e){ if (e.target === outlineModal) closeOutlineModal(); });
+
+    modalRestart.addEventListener('click', function(){
+      startTime = Date.now();
+      closeModal();
+      render();
+    });
+
+    modalSlideGo.addEventListener('click', function(){
+      var n = parseInt(modalSlideInput.value, 10);
+      if (!n || n < 1 || n > total) return;
+      var idx = n - 1;
+      i = idx;
+      startTime = Date.now() - startOfSlide(idx) * 60 * 1000;
+      closeModal();
+      render();
+    });
+    modalSlideInput.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); modalSlideGo.click(); }
+    });
+
+    modalTimeGo.addEventListener('click', function(){
+      var secs = parseTimeInput(modalTimeInput.value);
+      if (secs === null || secs < 0) return;
+      startTime = Date.now() - secs * 1000;
+      closeModal();
+      render();
+    });
+    modalTimeInput.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); modalTimeGo.click(); }
+    });
+
+    window.addEventListener('keydown', function(e){
+      if (!modal.hidden){
+        if (e.key === 'Escape'){ closeModal(); }
+        return;
+      }
+      if (!outlineModal.hidden){
+        if (e.key === 'Escape'){ closeOutlineModal(); }
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown'){ e.preventDefault(); go(1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); go(-1); }
+      else if (e.key === 'Home'){ i = 0; render(); }
+      else if (e.key === 'End'){ i = total - 1; render(); }
+    });
+
+    loadState();
+    render();
+  })();
+</script>
